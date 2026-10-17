@@ -58,8 +58,8 @@ useEffect(() => {
 
        <div className="users-header"
        style={{
-    padding: "35px 45px",
-    minHeight: "280px",
+    padding: "28px 40px",
+    minHeight: "230px",
   }}>
 
   <div>
@@ -68,14 +68,21 @@ useEffect(() => {
       CITIZEN PORTAL
     </span>
 
-    <h1 className="users-title">
+    <h1
+  className="users-title"
+  style={{
+    fontSize: "40px",
+    lineHeight: "1.1",
+    marginTop: "12px",
+  }}
+>
       👋 Welcome Back, {user?.name}
     </h1>
 
     <p className="users-subtitle"  style={{
    fontSize: "15px",
-    lineHeight: "1.6",
-    marginBottom: "22px",
+    lineHeight: "1.4",
+    marginBottom: "16px",
   }}>
       Raise complaints, track their progress, receive announcements,
       and stay connected with your local authorities.
@@ -83,7 +90,7 @@ useEffect(() => {
 
     <div
       style={{
-        marginTop: "28px",
+        marginTop: "18px",
         display: "flex",
         gap: "16px",
         flexWrap: "wrap",
@@ -131,15 +138,19 @@ useEffect(() => {
   </div>
 <div className="users-header-image">
     <img
-      src={dashboardBanner}
-      alt="Dashboard Banner"
-    />
+  src={dashboardBanner}
+  alt="Dashboard Banner"
+  style={{
+    width: "400px",
+    height: "auto",
+    objectFit: "contain",
+  }}
+/>
   </div>
 </div>
         {/* Stats Cards */}
         {/* Stats Cards */}
-<div className="grid gap-4 md:grid-cols-3 mb-8">
-
+<div className="grid gap-4 md:grid-cols-3 mt-5 mb-8">
   <Link
     to="/my-complaints"
     className="rounded-2xl bg-white shadow-lg p-5 hover:shadow-lg transition h-40"
@@ -192,57 +203,30 @@ className="rounded-2xl bg-white shadow-md p-5 hover:shadow-lg transition h-40"  
 
 {/* Quick Actions + Latest Announcements */}
 
-<div className="grid gap-8 lg:grid-cols-2 mb-10">
-
-  {/* Quick Actions */}
-  <div className="rounded-3xl bg-white p-8 shadow-lg">
-
-    <h2 className="text-2xl font-bold text-slate-900 mb-6">
-      ⚡ Quick Actions
-    </h2>
-
-   <div className="grid gap-6">
-
-      <Link
-        to="/profile"
-        className="rounded-2xl border border-violet-100 p-5 hover:bg-violet-50 transition"
-      >
-        <div className="text-4xl">👤</div>
-        <h3 className="font-semibold text-lg mt-3">My Profile</h3>
-        <p className="text-gray-500 text-sm mt-2">
-          View and update your personal information.
-        </p>
-      </Link>
-    </div>
-
-  </div>
+<div className="mb-10">
+  
 
   {/* Latest Announcements */}
-  <div className="rounded-3xl bg-white p-8 shadow-lg">
-
+<div className="rounded-3xl bg-white p-8 shadow-lg w-full">
     <h2 className="text-2xl font-bold text-slate-900 mb-6">
       📢 Latest Announcements
     </h2>
 
-    <div className="space-y-5">
+    <div className="grid grid-cols-2 gap-6">
 
-  {announcements.slice(0, 3).map((announcement) => (
-
+  {announcements.slice(0, 4).map((announcement) => (
     <div
       key={announcement._id}
-      className="rounded-xl bg-slate-50 p-5"
+      className="rounded-xl bg-slate-50 p-5 h-full"
     >
-
-      <h3 className="font-semibold">
+      <h3 className="font-semibold text-lg">
         {announcement.title}
       </h3>
 
       <p className="text-gray-600 mt-2">
         {announcement.message}
       </p>
-
     </div>
-
   ))}
 
 </div>

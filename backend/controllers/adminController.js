@@ -4,8 +4,7 @@ const Complaint = require("../models/Complaint");
 const User = require("../models/User");
 const Announcement = require("../models/Announcement");
 
-// ====================== Assign Officer ======================
-// ====================== Assign Officer ======================
+
 const assignOfficer = async (req, res) => {
   try {
     const { complaintId, officerId } = req.body;
@@ -59,14 +58,14 @@ const assignOfficer = async (req, res) => {
   }
 };
 
-// ====================== Get All Complaints ======================
 const getAllComplaints = async (req, res) => {
   try {
-    const complaints = await Complaint.find()
-      .populate("citizen", "name email")
-      .populate("department", "departmentName")
-      .populate("assignedOfficer", "name email");
-
+    const complaints = await Complaint.find({
+  status: "Pending",
+})
+  .populate("citizen", "name email")
+  .populate("department", "departmentName")
+  .populate("assignedOfficer", "name email");
     res.status(200).json(complaints);
 
   } catch (error) {
@@ -76,7 +75,6 @@ const getAllComplaints = async (req, res) => {
   }
 };
 
-// ====================== Get All Users ======================
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
@@ -92,7 +90,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// ====================== Create Officer ======================
 const createOfficer = async (req, res) => {
   try {
     const {
@@ -142,7 +139,6 @@ const createOfficer = async (req, res) => {
   }
 };
 
-// ====================== Create Announcement ======================
 const createAnnouncement = async (req, res) => {
   try {
     const { title, message } = req.body;
@@ -162,7 +158,6 @@ const createAnnouncement = async (req, res) => {
   }
 };
 
-// ====================== Get Announcements ======================
 const getAnnouncements = async (req, res) => {
   try {
     const announcements = await Announcement.find()
@@ -178,7 +173,6 @@ const getAnnouncements = async (req, res) => {
   }
 };
 
-// ====================== Update Announcement ======================
 const updateAnnouncement = async (req, res) => {
   try {
     const { title, message } = req.body;
@@ -208,7 +202,6 @@ const updateAnnouncement = async (req, res) => {
   }
 };
 
-// ====================== Delete Announcement ======================
 const deleteAnnouncement = async (req, res) => {
   try {
     const announcement = await Announcement.findById(req.params.id);
@@ -232,7 +225,6 @@ const deleteAnnouncement = async (req, res) => {
   }
 };
 
-// ====================== Create User ======================
 const createUser = async (req, res) => {
   try {
     const {
@@ -256,14 +248,14 @@ const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      phone,
-      address,
-      role,
-      department,
-    });
+  name,
+  email,
+  password: hashedPassword,
+  phone,
+  address,
+  role,
+  department: department || null,
+});
 
     res.status(201).json({
       message: "User created successfully",
@@ -277,7 +269,6 @@ const createUser = async (req, res) => {
   }
 };
 
-// ====================== Update User ======================
 const updateUser = async (req, res) => {
   try {
     const { name, email, role, department, phone, address } = req.body;
@@ -311,7 +302,29 @@ const updateUser = async (req, res) => {
   }
 };
 
-// ====================== Delete User ======================
+
+const deleteComplaint = async (req, res) => {
+  try {
+    const complaint = await Complaint.findById(req.params.id);
+
+    if (!complaint) {
+      return res.status(404).json({
+        message: "Complaint not found",
+      });
+    }
+
+    await Complaint.findByIdAndDelete(req.params.id);
+
+    res.json({
+      message: "Complaint deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -335,7 +348,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// ====================== Get All Departments ======================
 const getDepartments = async (req, res) => {
   try {
     const departments = await Department.find().select("departmentName");
@@ -361,5 +373,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  deleteComplaint,
 };
   

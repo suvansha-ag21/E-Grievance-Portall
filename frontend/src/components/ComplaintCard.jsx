@@ -1,13 +1,12 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ComplaintCard = ({ complaint, onDelete }) => {
-  const user = JSON.parse(localStorage.getItem("egp-user"));
+const user = JSON.parse(localStorage.getItem("egp-user"));
 
-  const detailsLink =
-    user?.role === "officer"
-      ? `/officer/complaint/${complaint._id}`
-      : `/complaint/${complaint._id}`;
+const [showPopup, setShowPopup] = useState(false);
 
+const detailsLink = `/officer/complaint/${complaint._id}`;
   return (
     <div
       className="glass-card"
@@ -16,13 +15,11 @@ const ComplaintCard = ({ complaint, onDelete }) => {
         margin: 0,
         padding: "22px",
         borderRadius: "18px",
-        minHeight: "250px",
         border: "1px solid #edf2f7",
         boxShadow: "0 10px 25px rgba(0,0,0,.06)",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
-        boxSizing: "border-box",
+        gap: "20px",
       }}
     >
       {/* Header */}
@@ -42,7 +39,6 @@ const ComplaintCard = ({ complaint, onDelete }) => {
               fontSize: "26px",
               fontWeight: "700",
               color: "#0f172a",
-              lineHeight: "1.2",
             }}
           >
             {complaint.title}
@@ -50,8 +46,7 @@ const ComplaintCard = ({ complaint, onDelete }) => {
 
           <p
             style={{
-              margin: "8px 0 0",
-              fontSize: "15px",
+              marginTop: "8px",
               color: "#64748b",
             }}
           >
@@ -68,9 +63,6 @@ const ComplaintCard = ({ complaint, onDelete }) => {
               ? "role-admin"
               : "role-officer"
           }`}
-          style={{
-            whiteSpace: "nowrap",
-          }}
         >
           {complaint.status}
         </span>
@@ -81,92 +73,191 @@ const ComplaintCard = ({ complaint, onDelete }) => {
       <p
         style={{
           color: "#475569",
-          fontSize: "15px",
-          lineHeight: "1.6",
-          margin: "20px 0",
-          minHeight: "48px",
-          overflow: "hidden",
+          lineHeight: "1.7",
+          margin: 0,
         }}
       >
         {complaint.description}
       </p>
 
-      {/* Footer */}
+      {/* Chips */}
 
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          gap: "18px",
+          gap: "10px",
+          flexWrap: "wrap",
         }}
       >
-        <div
+        <span
           style={{
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
+            background: "#f8fafc",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            fontWeight: "600",
           }}
         >
-          <span
-            style={{
-              background: "#f8fafc",
-              padding: "8px 16px",
-              borderRadius: "20px",
-              fontWeight: "600",
-              fontSize: "14px",
-              color: "#475569",
-            }}
-          >
-            {complaint.priority}
-          </span>
+          {complaint.priority}
+        </span>
 
-          <span
-            style={{
-              background: "#f8fafc",
-              padding: "8px 16px",
-              borderRadius: "20px",
-              fontWeight: "600",
-              fontSize: "14px",
-              color: "#475569",
-            }}
-          >
-            {new Date(complaint.createdAt).toLocaleDateString()}
-          </span>
-        </div>
+        <span
+          style={{
+            background: "#f8fafc",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            fontWeight: "600",
+          }}
+        >
+          {new Date(
+            complaint.createdAt
+          ).toLocaleDateString()}
+        </span>
+      </div>
 
+      {/* Buttons */}
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "12px",
+          flexWrap: "wrap",
+        }}
+      >
         {user?.role === "officer" ? (
           <Link
             to={detailsLink}
-            style={{
-              background:
-                "linear-gradient(135deg,#7c3aed,#4f46e5)",
-              color: "#fff",
-              textDecoration: "none",
-              padding: "10px 20px",
-              borderRadius: "10px",
-              fontWeight: "600",
-              fontSize: "14px",
-              whiteSpace: "nowrap",
-            }}
+            className="btn btn-primary"
           >
             View Details
           </Link>
         ) : (
-          <button
-            className="delete-btn"
-            onClick={() => onDelete(complaint._id)}
-            style={{
-              padding: "10px 20px",
-              borderRadius: "10px",
-              fontSize: "14px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Delete
-          </button>
+          <>
+<button
+  className="btn btn-primary"
+  onClick={() => setShowPopup(true)}
+  style={{
+    padding: "8px 16px",
+    fontSize: "13px",
+    borderRadius: "8px",
+    minWidth: "110px",
+    height: "38px",
+    fontWeight: "600",
+  }}
+>
+  View Update
+</button>
+
+            <button
+  className="delete-btn"
+  onClick={() => onDelete(complaint._id)}
+  style={{
+    padding: "8px 16px",
+    fontSize: "13px",
+    borderRadius: "8px",
+    minWidth: "90px",
+    height: "38px",
+    fontWeight: "600",
+  }}
+>
+  Delete
+</button>
+          </>
         )}
       </div>
+
+   
+      {showPopup && (
+  <div
+    onClick={() => setShowPopup(false)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,.55)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 9999,
+    }}
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        width: "500px",
+        background: "#fff",
+        borderRadius: "20px",
+        padding: "30px",
+        boxShadow: "0 25px 60px rgba(0,0,0,.25)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "25px",
+        }}
+      >
+        <h2 style={{ margin: 0, color: "#2563eb" }}>
+          👮 Officer Update
+        </h2>
+
+        <button
+          onClick={() => setShowPopup(false)}
+          style={{
+            border: "none",
+            background: "#f1f5f9",
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
+        >
+          ✕
+        </button>
+      </div>
+
+      <div className="card" style={{ marginBottom: "15px" }}>
+        <p className="text-gray-500">Current Status</p>
+        <h3>{complaint.status}</h3>
+      </div>
+
+      <div className="card" style={{ marginBottom: "15px" }}>
+        <p className="text-gray-500">Officer Remarks</p>
+        <h3>{complaint.remarks || "No remarks yet."}</h3>
+      </div>
+
+      <div className="card">
+        <p className="text-gray-500">
+          Expected Completion Date
+        </p>
+
+        <h3>
+          {complaint.expectedCompletionDate
+            ? new Date(
+                complaint.expectedCompletionDate
+              ).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })
+            : "Not Provided"}
+        </h3>
+      </div>
+
+      <button
+        className="btn btn-primary"
+        style={{
+          width: "100%",
+          marginTop: "20px",
+        }}
+        onClick={() => setShowPopup(false)}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };

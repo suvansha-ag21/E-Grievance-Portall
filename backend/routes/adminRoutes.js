@@ -16,9 +16,16 @@ const {
   updateUser,
   deleteUser,
   getDepartments,
+  deleteComplaint,
 } = require("../controllers/adminController");
 
 router.get("/complaints", protect, adminOnly, getAllComplaints);
+router.delete(
+  "/complaints/:id",
+  protect,
+  adminOnly,
+  deleteComplaint
+);
 
 router.get("/users", protect, adminOnly, getAllUsers);
 router.get("/departments", protect,  getDepartments);
@@ -32,7 +39,7 @@ router.post("/officers", protect, adminOnly, createOfficer);
 
 router.put("/assign-officer", protect, adminOnly, assignOfficer);
 
-// Announcement Routes
+
 router.post("/announcements", protect, adminOnly, createAnnouncement);
 
 router.get("/announcements", protect, adminOnly, getAnnouncements);

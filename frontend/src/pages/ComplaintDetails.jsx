@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import { complaintService } from '../services/complaintService';
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { complaintService } from "../services/complaintService";
 
 const ComplaintDetails = () => {
   const { id } = useParams();
+
   const [complaint, setComplaint] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,65 +16,261 @@ const ComplaintDetails = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
+  if (loading) {
+    return (
+      <div className="page page-light">
+        <Navbar />
+        <div style={{ paddingTop: "140px", textAlign: "center" }}>
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  if (!complaint) {
+    return (
+      <div className="page page-light">
+        <Navbar />
+        <div style={{ paddingTop: "140px", textAlign: "center" }}>
+          Complaint not found.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page page-light">
       <Navbar />
-      <div className="container py-24">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">Complaint details</h1>
-            <p className="text-gray-600 mt-2">See the latest status and full complaint summary.</p>
-          </div>
-          <Link to="/my-complaints" className="btn btn-outline btn-sm">
-            Back to complaints
-          </Link>
-        </div>
 
-        {loading ? (
-          <div className="glass-card p-8 text-center text-slate-700">Loading complaint details...</div>
-        ) : !complaint ? (
-          <div className="glass-card p-8 text-center text-slate-700">
-            <p className="text-xl font-semibold">Complaint not found</p>
-            <p className="text-gray-500 mt-2">Double-check the complaint link or return to your dashboard.</p>
-          </div>
-        ) : (
-          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-            <div className="glass-card p-8">
-              <h2 className="text-2xl font-semibold text-slate-900 mb-4">{complaint.title}</h2>
-              <p className="text-gray-600 leading-relaxed">{complaint.description}</p>
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-               <div className="card">
+      <div
+        style={{
+          maxWidth: "1400px",
+          margin: "0 auto",
+          padding: "120px 24px 50px",
+        }}
+      >
+        {/* Header */}
 
-  <p className="text-sm text-gray-500">
-    Department
+       <div
+  style={{
+    position: "relative",
+    textAlign: "center",
+    marginBottom: "45px",
+  }}
+>
+  <h1
+    style={{
+      fontSize: "48px",
+      fontWeight: "800",
+      color: "#2563eb",
+      marginBottom: "10px",
+    }}
+  >
+    📋 Complaint Details
+  </h1>
+
+  <p
+    style={{
+      color: "#64748b",
+      fontSize: "18px",
+    }}
+  >
+    View complete complaint information and officer updates.
   </p>
 
-  <p className="text-lg font-semibold text-slate-900">
-    {complaint.department?.departmentName ||
-      "Department Not Assigned"}
-  </p>
-
+  <Link
+    to="/my-complaints"
+    className="btn btn-outline"
+    style={{
+      position: "absolute",
+      right: 0,
+      top: "50%",
+      transform: "translateY(-50%)",
+    }}
+  >
+    ← Back
+  </Link>
 </div>
+
+        {/* Center Cards */}
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+           
+          }}
+        >
+          <div
+  style={{
+    display: "grid",
+gridTemplateColumns: "50% 40%",    gap: "30px",
+    width: "fit-content",
+    margin: "0 auto",
+  }}
+>
+            {/* LEFT CARD */}
+
+            <div
+              className="glass-card"
+              style={{
+                padding: "35px",
+                borderRadius: "22px",
+              }}
+            >
+              <div
+                style={{
+                  background: "#eff6ff",
+                  padding: "16px 22px",
+                  borderRadius: "14px",
+                  marginBottom: "25px",
+                  display: "inline-block",
+                }}
+              >
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: "38px",
+                    fontWeight: "800",
+                    color: "#1d4ed8",
+                  }}
+                >
+                  {complaint.title}
+                </h2>
+              </div>
+
+              <div
+                style={{
+                  background: "#f8fafc",
+                  padding: "18px",
+                  borderRadius: "14px",
+                  marginBottom: "30px",
+                  border: "1px solid #e2e8f0",
+                }}
+              >
+                <p
+                  style={{
+                    margin: 0,
+                    color: "#475569",
+                    fontSize: "16px",
+                    lineHeight: "1.8",
+                  }}
+                >
+                  {complaint.description}
+                </p>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2,1fr)",
+                  gap: "18px",
+                }}
+              >
+                <div className="card">
+                  <p className="text-sm text-gray-500">Department</p>
+                  <h3>{complaint.department?.departmentName || "Not Assigned"}</h3>
+                </div>
+
                 <div className="card">
                   <p className="text-sm text-gray-500">Priority</p>
-                  <p className="text-lg font-semibold text-slate-900">{complaint.priority}</p>
+                  <h3>{complaint.priority}</h3>
                 </div>
+
                 <div className="card">
                   <p className="text-sm text-gray-500">Status</p>
-                  <p className="text-lg font-semibold text-slate-900">{complaint.status}</p>
+                  <h3>{complaint.status}</h3>
                 </div>
+
                 <div className="card">
                   <p className="text-sm text-gray-500">Submitted</p>
-                  <p className="text-lg font-semibold text-slate-900">{new Date(complaint.createdAt).toLocaleDateString()}</p>
+                  <h3>
+                    {new Date(complaint.createdAt).toLocaleDateString()}
+                  </h3>
                 </div>
               </div>
             </div>
-            <div className="glass-card p-8 bg-slate-950/70">
-              <h3 className="text-xl font-semibold text-white mb-4">Support update</h3>
-              <p className="text-gray-300">Our team is reviewing your request and will respond with a resolution plan soon. This is a front-end demo view of the complaint workflow.</p>
+
+            {/* RIGHT CARD */}
+
+            <div
+              className="glass-card"
+              style={{
+                padding: "35px",
+                borderRadius: "22px",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "32px",
+                  fontWeight: "800",
+                  color: "#2563eb",
+                  marginBottom: "28px",
+                }}
+              >
+                👮 Officer Update
+              </h2>
+
+              <div style={{ marginBottom: "25px" }}>
+                <p className="text-gray-500 mb-2">Current Status</p>
+
+                <span
+                  className={`status-badge ${
+                    complaint.status === "Resolved"
+                      ? "status-active"
+                      : complaint.status === "Assigned"
+                      ? "role-admin"
+                      : "role-officer"
+                  }`}
+                >
+                  {complaint.status}
+                </span>
+              </div>
+
+              <div style={{ marginBottom: "25px" }}>
+                <p className="text-gray-500 mb-2">Officer Remarks</p>
+
+                <div
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "12px",
+                    padding: "16px",
+                    minHeight: "75px",
+                  }}
+                >
+                  {complaint.remarks || "No remarks available."}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-gray-500 mb-2">
+                  Expected Completion Date
+                </p>
+
+                <div
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "12px",
+                    padding: "16px",
+                    fontWeight: "600",
+                  }}
+                >
+                  {complaint.expectedCompletionDate
+                    ? new Date(
+                        complaint.expectedCompletionDate
+                      ).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : "Not provided"}
+                </div>
+              </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

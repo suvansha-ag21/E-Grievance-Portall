@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import { adminService } from '../services/adminService';
 import departmentService from "../services/departmentService";
 import announcementService from "../services/announcementService";
+import admin2 from "../assets/admin2.png";
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState({
     users: 0,
@@ -60,6 +61,11 @@ const AdminDashboard = () => {
     </p>
 
   </div>
+  <img
+  src={admin2}
+  alt="Admin"
+  className="absolute bottom-0 right-10 w-[480px] h-auto object-contain"
+/>
 
 </div>
         </div>

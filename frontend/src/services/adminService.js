@@ -12,6 +12,8 @@ const authConfig = () => ({
   },
 });
 
+
+
 export const adminService = {
   // Get all users
   getUsers: async () => {
@@ -73,6 +75,15 @@ deleteUser: async (id) => {
     const response = await axios.get(`${API}/complaints`, authConfig());
     return response.data;
   },
+
+  deleteComplaint: async (id) => {
+  const response = await axios.delete(
+    `${API}/complaints/${id}`,
+    authConfig()
+  );
+
+  return response.data;
+},
 
   
 

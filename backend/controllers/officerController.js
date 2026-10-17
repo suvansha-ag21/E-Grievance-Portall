@@ -1,6 +1,6 @@
 const Complaint = require("../models/Complaint");
 
-// View Assigned Complaints
+
 const getAssignedComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find({
@@ -39,7 +39,12 @@ const getAssignedComplaintById = async (req, res) => {
 // Update Complaint Status
 const updateComplaintStatus = async (req, res) => {
   try {
-    const { status, remarks } = req.body;
+
+const {
+  status,
+  remarks,
+  expectedCompletionDate,
+} = req.body;
 
 const complaint = await Complaint.findById(req.params.id);
 
@@ -50,7 +55,10 @@ const complaint = await Complaint.findById(req.params.id);
     }
 
     complaint.status = status;
-    complaint.remarks = remarks;
+
+  complaint.remarks = remarks;
+
+  complaint.expectedCompletionDate =expectedCompletionDate;
 
     await complaint.save();
 

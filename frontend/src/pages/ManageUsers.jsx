@@ -5,6 +5,7 @@ import AddUserModal from "../components/admin/AddUserModal";
 import adminService from "../services/adminService";
 import "../styles/admin.css";
 import EditUserModal from "../components/admin/EditUserModal";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -236,33 +237,38 @@ setFilteredUsers(filtered);
                         </span>
                       </td>
 
-                      <td>
+                      <td style={{ textAlign: "center", verticalAlign: "middle" }}>
 
-                        <div className="table-actions">
-
-                          <button
-  className="view-btn"
-  onClick={() => setSelectedUser(user)}
+                        <div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "18px",
+    width: "100%",
+  }}
 >
-  👁View
-</button>
+  <Eye
+    size={19}
+    color="#2563eb"
+    style={{ cursor: "pointer" }}
+    onClick={() => setSelectedUser(user)}
+  />
 
-                          <button
-  className="edit-btn"
-  onClick={() => setEditUser(user)}
->
-  ✏️Edit
-</button>
+  <Pencil
+    size={19}
+    color="#f59e0b"
+    style={{ cursor: "pointer" }}
+    onClick={() => setEditUser(user)}
+  />
 
-                          <button
-  className="delete-btn"
-  onClick={() => handleDelete(user._id)}
->
-   🗑️Delete
-</button>
-
-                        </div>
-
+  <Trash2
+    size={19}
+    color="#ef4444"
+    style={{ cursor: "pointer" }}
+    onClick={() => handleDelete(user._id)}
+  />
+</div>
                       </td>
 
                     </tr>

@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const complaintSchema = new mongoose.Schema(
   {
+
+    expectedCompletionDate: {
+  type: Date,
+},
+
     title: {
       type: String,
       required: true,

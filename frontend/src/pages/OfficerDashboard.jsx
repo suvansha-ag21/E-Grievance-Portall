@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { officerService } from "../services/officerService";
+import officer from "../assets/officer.png";
 
 const OfficerDashboard = () => {
   const [complaints, setComplaints] = useState([]);
@@ -38,9 +39,14 @@ const OfficerDashboard = () => {
 
       <div className="container py-24">
 
-        {/* Header */}
 
-        <div className="users-header">
+        <div
+  className="users-header"
+  style={{
+    minHeight: "220px",
+    padding: "25px 40px",
+  }}
+>
 
           <div>
 
@@ -59,12 +65,19 @@ const OfficerDashboard = () => {
 
           </div>
 
-          <Link
-            to="/officer/assigned"
-            className="add-user-btn"
-          >
-            📋 Assigned Cases
-          </Link>
+          
+
+          <div className="users-header-image">
+    <img
+      src={officer}
+      alt="Officer Dashboard"
+      style={{
+        width: "300px",
+        height: "auto",
+        objectFit: "contain",
+      }}
+    />
+  </div>
 
         </div>
 
@@ -78,7 +91,7 @@ const OfficerDashboard = () => {
 
           <>
 
-            {/* Statistics */}
+            
 
             <div
   style={{
@@ -141,7 +154,7 @@ const OfficerDashboard = () => {
 
             </div>
 
-            {/* Quick Actions */}
+            
 
            <div className="dashboard-actions">
 

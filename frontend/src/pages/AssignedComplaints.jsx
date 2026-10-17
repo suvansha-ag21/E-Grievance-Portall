@@ -18,12 +18,17 @@ const AssignedComplaints = () => {
     <div className="page page-light">
       <Navbar />
 
-      <div className="container py-24">
+      <div
+  className="container pt-6 pb-24"
+  style={{
+    marginTop: "-120px",
+  }}
+>
 
         {/* Header */}
         <div
           className="users-header"
-          style={{ marginBottom: "40px" }}
+          style={{ marginBottom: "-40px" }}
         >
           <div>
             <span className="page-badge">

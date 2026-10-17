@@ -11,6 +11,8 @@ const OfficerComplaintDetails = () => {
   const [status, setStatus] = useState("Pending");
   const [remarks, setRemarks] = useState("");
   const [loading, setLoading] = useState(true);
+  const [expectedCompletionDate, setExpectedCompletionDate] =
+useState("");
 
   useEffect(() => {
     const fetchComplaint = async () => {
@@ -20,6 +22,11 @@ const OfficerComplaintDetails = () => {
         setComplaint(data);
         setStatus(data.status);
         setRemarks(data.remarks || "");
+        setExpectedCompletionDate(
+  data.expectedCompletionDate
+    ? data.expectedCompletionDate.substring(0, 10)
+    : ""
+);
       } catch (error) {
         console.error(error);
       } finally {
@@ -32,10 +39,11 @@ const OfficerComplaintDetails = () => {
 
   const handleUpdate = async () => {
     try {
-      await officerService.updateAssignedComplaint(id, {
-        status,
-        remarks,
-      });
+      await officerService.updateAssignedComplaint(id,{
+   status,
+   remarks,
+   expectedCompletionDate,
+});
 
       alert("Complaint updated successfully.");
       navigate("/officer/assigned");
@@ -220,6 +228,22 @@ const OfficerComplaintDetails = () => {
             />
 
           </div>
+          <div className="mt-5">
+
+  <label className="form-label">
+    Expected Completion Date
+  </label>
+
+  <input
+    type="date"
+    className="form-input"
+    value={expectedCompletionDate}
+    onChange={(e) =>
+      setExpectedCompletionDate(e.target.value)
+    }
+  />
+
+</div>
 
           <div
             style={{

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { adminService } from "../services/adminService";
 import ViewComplaintModal from "../components/admin/ViewComplaintModal";
-import AssignOfficerModal from "../components/admin/AssignOfficerModal";
+// import AssignOfficerModal from "../components/admin/AssignOfficerModal";
 import "../styles/admin.css";
+
 
 const ManageComplaints = () => {
   const [complaints, setComplaints] = useState([]);
@@ -15,6 +16,28 @@ const ManageComplaints = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
 
   const [assignComplaint, setAssignComplaint] = useState(null);
+  
+  const handleDelete = async (id) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this complaint?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await adminService.deleteComplaint(id);
+
+    setComplaints((prev) =>
+      prev.filter((complaint) => complaint._id !== id)
+    );
+
+    alert("Complaint deleted successfully.");
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete complaint.");
+  }
+};
+
 
   const fetchComplaints = async () => {
     try {
@@ -68,7 +91,6 @@ const ManageComplaints = () => {
 
         </div>
 
-        {/* Search */}
 
         <div className="search-box">
 
@@ -82,7 +104,6 @@ const ManageComplaints = () => {
 
         </div>
 
-        {/* Stats */}
 
         <div className="users-stats">
 
@@ -145,7 +166,6 @@ const ManageComplaints = () => {
 
         </div>
 
-        {/* Table */}
 
         {loading ? (
 
@@ -252,13 +272,11 @@ const ManageComplaints = () => {
                             </button>
 
                             <button
-                              className="edit-btn"
-                              onClick={() =>
-                                setAssignComplaint(complaint)
-                              }
-                            >
-                              👮 Assign
-                            </button>
+  className="delete-btn"
+  onClick={() => handleDelete(complaint._id)}
+>
+  🗑 Delete
+</button>
 
                           </div>
 
